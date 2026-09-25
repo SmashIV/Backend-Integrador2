@@ -58,4 +58,7 @@ class TelemetriaService:
             "fecha_registro":guardado.fecha_hora,
             "alerta_microclima":alerta,
         }
-        
+
+    def obtener_historial_reciente (self, limite: int=10):
+        "Consulta el repositorio para traer las ultimas lecturas registradas."
+        return self.repositorio.obtener_ultimas_lecturas(limite)

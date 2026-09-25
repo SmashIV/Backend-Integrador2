@@ -15,3 +15,7 @@ def recibir_telemetria(datos: TelemetriaLoteEntradaDTO):
     respuesta = servicio.procesar_lote_telemetria(datos)
     return respuesta
 
+@router.get("/")
+def consultar_telemetria(limite: int=10):
+    """Endpoint para que el front reciba las últimas lecturas de los camiones"""
+    return servicio.obtener_historial_reciente(limite)
