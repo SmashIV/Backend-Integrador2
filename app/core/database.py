@@ -29,12 +29,12 @@ def init_db():
     cursor_db.execute("""
     CREATE TABLE IF NOT EXISTS Telemetria (
         Id_lectura SERIAL PRIMARY KEY,
-        fecha_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        temperatura NUMERIC (5,2) NOT NULL,
-        humedad NUMERIC (5,2) NOT NULL,
-        gases NUMERIC (7,2) NOT NULL,
-        latitud NUMERIC (10,7) NOT NULL,
-        longitud NUMERIC (10,7) NOT NULL,
+        Fecha_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        Temperatura NUMERIC (5,2) NOT NULL,
+        Humedad NUMERIC (5,2) NOT NULL,
+        Gases NUMERIC (7,2) NOT NULL,
+        Latitud NUMERIC (10,7) NOT NULL,
+        Longitud NUMERIC (10,7) NOT NULL,
         Id_dispositivo INT NOT NULL REFERENCES Dispositivos(Id_dispositivo)
     )
     """)
