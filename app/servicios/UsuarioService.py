@@ -25,3 +25,16 @@ class UsuarioService:
 
     def listar_usuarios(self):
         return self.repositorio.listar_usuarios()
+
+    def autenticar_usuario(self, datos):
+        usuario = self.repositorio.obtener_byemail(datos.email)
+        if not usuario:
+            raise ValueError("Credenciales inválidas")
+        if usuario["contrasena"] != datos.contrasena:
+            raise ValueError("Contraseña inváliad")
+        return{
+            "id_usuario":usuario["id_usuario"],
+            "nombre":usuario["nombre"],
+            "email":usuario["email"],
+            "rol":usuario["rol"],
+        }

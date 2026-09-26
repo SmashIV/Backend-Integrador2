@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from app.controladores import TelemetriaController, AlertaController, UsuarioController, DispositivoController
 
 #App principal
@@ -8,7 +9,16 @@ app = FastAPI(
     version = "1.0.0",
 )
 
-#Conectar el controlador
+#Configuracion de CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+#Conectar el controlador 
 app.include_router(TelemetriaController.router, prefix="/api")
 app.include_router(AlertaController.router, prefix="/api" )
 app.include_router(UsuarioController.router, prefix="/api")

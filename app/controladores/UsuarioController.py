@@ -1,6 +1,6 @@
 from typing import List
 from fastapi import APIRouter, HTTPException, status
-from app.dto.UsuarioDTO import UsuarioCrearDTO, UsuarioRespuestaDTO
+from app.dto.UsuarioDTO import UsuarioCrearDTO, UsuarioRespuestaDTO, LoginDTO
 from app.servicios.UsuarioService import UsuarioService
 
 router = APIRouter(prefix="/usuarios", tags=["Usuarios"])
@@ -35,3 +35,18 @@ def buscar_byid(id_usuario):
             detail=f"Usuario con ID {id_usuario} no encontrado"
         )
     return usuario   
+
+@router.post(
+    "/login",
+    response_model=UsuarioRespuestaDTO,
+    summary="Iniciar sesión y autenticar"
+)
+def login(credenciales:LoginDTO):
+    try:
+        usuario_autenticado = servicio.autenticar_usuario(credenciales)
+        return usuario_autenticado
+    except ValueError as error:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=str(error)
+        )

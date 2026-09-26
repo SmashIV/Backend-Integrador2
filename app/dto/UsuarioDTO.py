@@ -14,3 +14,8 @@ class UsuarioRespuestaDTO(BaseModel):
     rol:str
 
     model_config = ConfigDict(from_attributes=True)
+
+class LoginDTO(BaseModel):
+    email:EmailStr
+    contrasena:str
+    
