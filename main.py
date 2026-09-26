@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.controladores import TelemetriaController, AlertaController
+from app.controladores import TelemetriaController, AlertaController, UsuarioController
 
 #App principal
 app = FastAPI(
@@ -11,6 +11,7 @@ app = FastAPI(
 #Conectar el controlador
 app.include_router(TelemetriaController.router, prefix="/api")
 app.include_router(AlertaController.router, prefix="/api" )
+app.include_router(UsuarioController.router, prefix="/api")
 
 @app.get("/")
 def inicio():
@@ -18,3 +19,4 @@ def inicio():
         "mensaje" : "Servidor Monitoreo IoT",
         "documentacion" : "/docs"
     }
+
