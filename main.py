@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.controladores import TelemetriaController, AlertaController, UsuarioController
+from app.controladores import TelemetriaController, AlertaController, UsuarioController, DispositivoController
 
 #App principal
 app = FastAPI(
@@ -12,6 +12,7 @@ app = FastAPI(
 app.include_router(TelemetriaController.router, prefix="/api")
 app.include_router(AlertaController.router, prefix="/api" )
 app.include_router(UsuarioController.router, prefix="/api")
+app.include_router(DispositivoController.router, prefix="/api")
 
 @app.get("/")
 def inicio():
