@@ -11,3 +11,6 @@ class AlertaRespuestaDTO(BaseModel):
     id_usuario:Optional[int]=None
 
     model_config = ConfigDict(from_attributes=True)
+
+class AtenderAlertaDTO(BaseModel):
+    id_usuario:int

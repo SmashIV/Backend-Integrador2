@@ -41,3 +41,24 @@ class AlertaRepositorio:
         for reg in registros:
             resultado.append(dict(reg))
         return resultado
+
+    def atender_alerta(self, id_alerta:int, id_usuario:int):
+        sentencia_sql = """
+                        UPDATE Alertas
+                        SET fecha_vista = NOW(),
+                        id_usuario = %s
+                        WHERE  id_alerta = %s
+                        RETURNING id_alerta, tipo_alerta, fecha_hora, fecha_vista, id_lectura, id_usuario;
+        """
+        conexion = get_db()
+        alerta_actualizada = None
+
+        with conexion:
+            with conexion.cursor(cursor_factory=RealDictCursor) as cursor:
+                cursor.execute(sentencia_sql, (id_usuario,id_alerta))
+                registro = cursor.fetchone()
+                if registro:
+                    alerta_actualizada = dict(registro)
+
+        conexion.close()
+        return alerta_actualizada
