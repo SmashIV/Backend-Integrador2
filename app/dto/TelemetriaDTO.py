@@ -1,5 +1,6 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional
+from datetime import datetime
 
 class LecturaSensorDTO(BaseModel):
     sensor:str
@@ -29,3 +30,15 @@ class TelemetriaLoteEntradaDTO(BaseModel):
     readings:List[LecturaSensorDTO]
     gps:List[CoordenadasDTO]
     alerts:Optional[List[AlertasDTO]] = []
+
+class TelemetriaRespuestaDTO(BaseModel):
+    id_lectura:int
+    id_dispositivo:int
+    temperatura:float
+    humedad:float
+    gases:float
+    latitud:float
+    longitud:float
+    fecha_hora:datetime
+
+    model_config = ConfigDict(from_attributes=True)

@@ -42,3 +42,45 @@ class TelemetriaRepositorio:
         for reg in registros:
             resultado.append(dict(reg))
         return resultado
+
+
+    def obtener_ultimas_lecturas_byunidad(self, id_dispositivo, limite):
+        sentencia_sql = """
+                        SELECT id_lectura, id_dispositivo, temperatura, humedad, gases, latitud, longitud, fecha_hora
+                        FROM(
+                            SELECT id_lectura, id_dispositivo, temperatura, humedad, gases, latitud, longitud, fecha_hora
+                            FROM Telemetria
+                            WHERE id_dispositivo = %s
+                            ORDER BY fecha_hora DESC
+                            LIMIT %s
+                        ) AS subconsulta
+                        ORDER BY fecha_hora ASC;
+        """
+        conexion = get_db()
+        with conexion.cursor(cursor_factory=RealDictCursor) as cursor:
+            cursor.execute(sentencia_sql, (id_dispositivo, limite))
+            registros = cursor.fetchall()
+        conexion.close()
+        resultado = []
+        for reg in registros:
+            resultado.append(dict(reg))
+        return resultado
+
+    def obtener_ultima_lectura_byunidad(self, id_dispositivo):
+        sentencia_sql = """
+                        SELECT id_lectura, id_dispositivo, temperatura, humedad, gases, latitud, longitud, fecha_hora
+                        FROM Telemetria
+                        WHERE id_dispositivo = %s
+                        ORDER BY fecha_hora DESC
+                        LIMIT 1;
+
+        """
+        conexion = get_db()
+        lectura = None
+        with conexion.cursor(cursor_factory=RealDictCursor) as cursor:
+            cursor.execute(sentencia_sql, (id_dispositivo,))
+            registro = cursor.fetchone()
+            if registro:
+                lectura = dict(registro)
+        conexion.close()
+        return lectura

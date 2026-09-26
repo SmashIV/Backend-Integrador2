@@ -74,6 +74,12 @@ class TelemetriaService:
             },  
         }
 
-    def obtener_historial_reciente (self, limite: int=10):
+    def obtener_ultimas_lecturas (self, limite: int=10):
         "Consulta el repositorio para traer las ultimas lecturas registradas."
         return self.telemetria_repositorio.obtener_ultimas_lecturas(limite)
+
+    def obtener_ultimas_lecturas_byunidad(self, id_dispositivo, limite:int=50):
+        return self.telemetria_repositorio.obtener_ultimas_lecturas_byunidad(id_dispositivo, limite)
+
+    def obtener_ultima_lectura_byunidad(self, id_dispositivo):
+        return self.telemetria_repositorio.obtener_ultima_lectura_byunidad(id_dispositivo)
