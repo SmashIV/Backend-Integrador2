@@ -1,3 +1,4 @@
+from app.core.seguridad import password_hash
 from app.dto.UsuarioDTO import UsuarioCrearDTO
 from app.entidades.Usuario import Usuario
 from app.repositorios.UsuarioRepositorio import UsuarioRepositorio
@@ -15,7 +16,7 @@ class UsuarioService:
         entidad = Usuario(
             nombre = datos.nombre,
             email = datos.email,
-            contrasena = datos.contrasena,
+            contrasena = password_hash.hash(datos.contrasena),
             rol = datos.rol,
         )
         return self.repositorio.guardar(entidad)
@@ -30,11 +31,15 @@ class UsuarioService:
         usuario = self.repositorio.obtener_byemail(datos.email)
         if not usuario:
             raise ValueError("Credenciales inválidas")
-        if usuario["contrasena"] != datos.contrasena:
-            raise ValueError("Contraseña inváliad")
+        try:
+            contrasena_valida = password_hash.verify(datos.contrasena, usuario.contrasena)
+        except Exception:
+            contrasena_valida = False
+        if not contrasena_valida:
+            raise ValueError("Credenciales inválidas")
         return{
-            "id_usuario":usuario["id_usuario"],
-            "nombre":usuario["nombre"],
-            "email":usuario["email"],
-            "rol":usuario["rol"],
+            "id_usuario":usuario.id_usuario,
+            "nombre":usuario.nombre,
+            "email":usuario.email,
+            "rol":usuario.rol,
         }
