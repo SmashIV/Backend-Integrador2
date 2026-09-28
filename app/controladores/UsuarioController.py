@@ -79,6 +79,7 @@ def buscar_byid(id_usuario, _ : dict = Depends(obtener_usuario_actual)):
 
 @router.get(
     "/",
+    response_model=List[UsuarioRespuestaDTO],
     summary= f"Obtiene todos los usuarios de la base de datos",
 )
 def listar_usuarios(_: dict = Depends(obtener_usuario_actual)):

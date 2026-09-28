@@ -9,7 +9,7 @@ router = APIRouter(prefix="/telemetria", tags = ["Telemetria"])
 servicio = TelemetriaService()
 
 @router.post("/",status_code=status.HTTP_201_CREATED)
-def recibir_telemetria(datos: TelemetriaLoteEntradaDTO, _: dict = Depends(obtener_usuario_actual)):
+def recibir_telemetria(datos: TelemetriaLoteEntradaDTO):
     """
         Endpoint que recibe el paquete JSON desde el ESP32,
         lo valida mediante el DTO y lo manda a procesar al

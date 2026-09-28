@@ -10,5 +10,5 @@ class Usuario(Base):
     id_usuario: Mapped[int] = mapped_column(Integer, primary_key=True)
     nombre: Mapped[str] = mapped_column(String(70))
     email: Mapped[str] = mapped_column(String(120), unique=True)
-    contrasena: Mapped[str] = mapped_column(String(30))
+    contrasena: Mapped[str] = mapped_column(String(60))
     rol: Mapped[str] = mapped_column(String(20), default="Operador")

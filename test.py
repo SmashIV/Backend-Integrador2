@@ -1,5 +1,4 @@
 import psycopg2
-import psycopg2
 
 # Coloca aquí los datos de tu PostgreSQL local:
 DB_CONFIG = {

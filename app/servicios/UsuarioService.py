@@ -1,3 +1,7 @@
+import hmac
+
+from pwdlib.exceptions import PwdlibError
+
 from app.core.seguridad import password_hash
 from app.dto.UsuarioDTO import UsuarioCrearDTO
 from app.entidades.Usuario import Usuario
@@ -31,10 +35,20 @@ class UsuarioService:
         usuario = self.repositorio.obtener_byemail(datos.email)
         if not usuario:
             raise ValueError("Credenciales inválidas")
+
         try:
             contrasena_valida = password_hash.verify(datos.contrasena, usuario.contrasena)
-        except Exception:
-            contrasena_valida = False
+        except PwdlibError:
+            contrasena_valida = hmac.compare_digest(
+                datos.contrasena,
+                usuario.contrasena,
+            )
+            if contrasena_valida:
+                self.repositorio.actualizar_contrasena(
+                    usuario.id_usuario,
+                    password_hash.hash(datos.contrasena),
+                )
+
         if not contrasena_valida:
             raise ValueError("Credenciales inválidas")
         return{

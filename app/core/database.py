@@ -1,6 +1,6 @@
 from contextlib import contextmanager
 
-from sqlalchemy import create_engine
+from sqlalchemy import URL, create_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
 from app.core.config import settings
@@ -10,9 +10,13 @@ class Base(DeclarativeBase):
     pass
 
 
-DATABASE_URL = (
-    f"postgresql+psycopg2://{settings.db_user}:{settings.db_password}"
-    f"@{settings.db_host}:{settings.db_port}/{settings.db_name}"
+DATABASE_URL = URL.create(
+    drivername="postgresql+psycopg2",
+    username=settings.db_user,
+    password=settings.db_password,
+    host=settings.db_host,
+    port=settings.db_port,
+    database=settings.db_name,
 )
 
 engine = create_engine(DATABASE_URL)
