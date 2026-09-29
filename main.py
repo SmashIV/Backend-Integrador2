@@ -1,12 +1,22 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.controladores import TelemetriaController, AlertaController, UsuarioController, DispositivoController
+from app.core.database import init_db
+
+
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    init_db()
+    yield
 
 #App principal
 app = FastAPI(
     title = "Monitoreo Avícola Los Andes",
     description = "API IoT para el monitoreo de aves durante el transporte",
     version = "1.0.0",
+    lifespan=lifespan,
 )
 
 #Configuracion de CORS
@@ -33,4 +43,3 @@ def inicio():
         "mensaje" : "Servidor Monitoreo IoT",
         "documentacion" : "/docs"
     }
-
