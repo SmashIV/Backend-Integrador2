@@ -3,10 +3,12 @@ from typing import List
 
 from app.dto.TelemetriaDTO import TelemetriaLoteEntradaDTO, TelemetriaRespuestaDTO
 from app.servicios.TelemetriaService import TelemetriaService
+from app.servicios.DispositivoService import DispositivoService
 from app.core.auth import obtener_usuario_actual
 
 router = APIRouter(prefix="/telemetria", tags = ["Telemetria"])
 servicio = TelemetriaService()
+servicio_dispositivos = DispositivoService()
 
 @router.post("/",status_code=status.HTTP_201_CREATED)
 def recibir_telemetria(datos: TelemetriaLoteEntradaDTO):
@@ -15,6 +17,11 @@ def recibir_telemetria(datos: TelemetriaLoteEntradaDTO):
         lo valida mediante el DTO y lo manda a procesar al
         servicio
     """
+    if not servicio_dispositivos.obtener_byid(datos.device_id):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Dispositivo no autorizado",
+        )
     respuesta = servicio.procesar_lote_telemetria(datos)
     return respuesta
 

@@ -1,4 +1,4 @@
-from pydantic import Field
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -18,6 +18,15 @@ class JwtSettings(BaseSettings):
     expire_minutes: int = Field(default=60, validation_alias="JWT_EXPIRE_MINUTES")
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+
+    @field_validator("secret")
+    @classmethod
+    def validar_secret(cls, valor: str) -> str:
+        if not valor or not valor.strip():
+            raise ValueError("JWT_SECRET no puede estar vacío")
+        if len(valor) < 32:
+            raise ValueError("JWT_SECRET debe tener al menos 32 caracteres")
+        return valor
 
 
 settings = Settings()
