@@ -23,3 +23,4 @@ print("¡Validación exitosa!")
 print(f"Camión asignado automáticamente: {paquete_validado.device_id}")
 print(f"Total de lecturas de sensores recibidas: {len(paquete_validado.readings)}")
 print(f"Primer sensor: {paquete_validado.readings[0].sensor} = {paquete_validado.readings[0].v}")
+    

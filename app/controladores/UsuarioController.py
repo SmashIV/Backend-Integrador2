@@ -36,6 +36,14 @@ def buscar_byid(id_usuario):
         )
     return usuario   
 
+@router.get(
+        "/",
+        response_model=List[UsuarioRespuestaDTO],
+        summary="Listar usuarios",
+)
+def listar_usuarios():
+    return servicio.listar_usuarios()
+
 @router.post(
     "/login",
     response_model=UsuarioRespuestaDTO,
