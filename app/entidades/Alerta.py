@@ -1,12 +1,21 @@
-from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional
 
-@dataclass
-class Alerta:
-    tipo_alerta:str
-    id_lectura:int
-    id_alerta:Optional[int]=None
-    fecha_hora:Optional[datetime]=None
-    fecha_vista:Optional[datetime]=None
-    id_usuario:Optional[int]=None
+from sqlalchemy import DateTime, ForeignKey, Integer, String, func
+from sqlalchemy.orm import Mapped, mapped_column
+
+from app.core.database import Base
+
+
+class Alerta(Base):
+    __tablename__ = "alertas"
+    __mapper_args__ = {"eager_defaults": True}
+
+    id_alerta: Mapped[int] = mapped_column(Integer, primary_key=True)
+    tipo_alerta: Mapped[str] = mapped_column(String(60))
+    fecha_hora: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+    fecha_vista: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    id_lectura: Mapped[int] = mapped_column(ForeignKey("telemetria.id_lectura"))
+    id_usuario: Mapped[Optional[int]] = mapped_column(
+        ForeignKey("usuarios.id_usuario"), nullable=True
+    )

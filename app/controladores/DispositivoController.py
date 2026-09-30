@@ -1,18 +1,20 @@
 from typing import List
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
 from app.dto.DispositivoDTO import DispositivoCrearDTO, DispositivoRespuestaDTO
 from app.servicios.DispositivoService import DispositivoService
+
+from app.core.auth import obtener_usuario_actual
 
 router = APIRouter(prefix="/dispositivos", tags=["Dispositivos"])
 servicio = DispositivoService()
 
 @router.post(
-    "/",
+    "/register",
     response_model=DispositivoRespuestaDTO,
     status_code=status.HTTP_201_CREATED,
     summary="Registrar nuevo dispositivo",
     )
-def registrar_dispositivo(datos:DispositivoCrearDTO):
+def registrar_dispositivo(datos:DispositivoCrearDTO, _: dict = Depends(obtener_usuario_actual)):
     try:
         dispositivo = servicio.registrar_dispositivo(datos)
         return dispositivo
@@ -27,7 +29,7 @@ def registrar_dispositivo(datos:DispositivoCrearDTO):
     response_model=List[DispositivoRespuestaDTO],
     summary="Listar dispositivos registrados"
 )
-def listar_dispositivos():
+def listar_dispositivos(_: dict = Depends(obtener_usuario_actual)):
     return servicio.listar_dispositivos()
 
 @router.get(
@@ -35,7 +37,7 @@ def listar_dispositivos():
     response_model=DispositivoRespuestaDTO,
     summary="Buscar por id",
 )
-def obtener_byid(id_dispositivo):
+def obtener_byid(id_dispositivo, _: dict = Depends(obtener_usuario_actual)):
     dispositivo = servicio.obtener_byid(id_dispositivo)
     if not dispositivo:
         raise HTTPException(

@@ -18,4 +18,11 @@ class UsuarioRespuestaDTO(BaseModel):
 class LoginDTO(BaseModel):
     email:EmailStr
     contrasena:str
-    
+
+class LoginRespuestaDTO(BaseModel):
+    access_token:str
+    token_type:str = "bearer"
+    id_usuario:int
+    nombre:str
+    email:str
+    rol:str
