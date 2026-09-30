@@ -1,13 +1,13 @@
-import psycopg2
+import os
+
 import psycopg2
 
-# Coloca aquí los datos de tu PostgreSQL local:
 DB_CONFIG = {
-    "dbname": "Monitoreo_Integrador",
-    "user": "postgres",         
-    "password": "david352",  
-    "host": "localhost",
-    "port": 5432
+    "dbname": os.environ["DB_NAME"],
+    "user": os.environ["DB_USER"],
+    "password": os.environ["DB_PASSWORD"],
+    "host": os.getenv("DB_HOST", "localhost"),
+    "port": int(os.getenv("DB_PORT", "5432")),
 }
 
 try:
